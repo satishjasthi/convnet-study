@@ -5,7 +5,24 @@ import glob
 import pickle
 import numpy as np
 
-from .preprocessing import one_hotify
+def one_hotify(labels, nb_classes=None):
+    '''
+    Converts integer labels to one-hot vectors.
+
+    Arguments:
+        labels: numpy array containing integer labels. The labels must be in
+        range [0, num_labels - 1].
+
+    Returns:
+        one_hot_labels: numpy array with shape (batch_size, num_labels).
+    '''
+    size = len(labels)
+    if nb_classes is None:
+        nb_classes = np.max(labels) + 1
+
+    one_hot_labels = np.zeros((size, nb_classes))
+    one_hot_labels[np.arange(size), labels] = 1
+    return one_hot_labels
 
 def load(data_dir, valid_ratio=0.0, one_hot=True, shuffle=False, dtype='float32'):
   """
